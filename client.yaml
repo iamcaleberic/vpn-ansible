@@ -1,0 +1,8 @@
+---
+- name: Ansible Playbook for generating client ovpn profiles
+  hosts: vpn
+  become: true
+  become_method: sudo
+  become_user: root
+  roles:
+    - client

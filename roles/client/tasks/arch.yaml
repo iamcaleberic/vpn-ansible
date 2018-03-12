@@ -1,0 +1,12 @@
+- name: Check if easy-rsa and bash is installed
+  pacman:
+   name:  easy-rsa
+   state: present
+   update_cache: true
+
+- name: Generate Client certificate and Private key
+  # when: # make CA success
+  shell: easyrsa --batch build-client-full {{ client_name }} nopass
+  args:
+    chdir: {{ ca_dir }}
+    executable: /bin/bash

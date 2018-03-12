@@ -1,0 +1,37 @@
+- name: Install easyrsa and bash
+  pacman:
+    name: easy-rsa, bash
+    state: present
+    update_cache: true
+
+
+- name: Add Certicate Variables
+  template:
+    src: vars-arch.j2
+    dest: "{{ ca_dir }}"/vars
+    owner: root
+    group: root
+
+- name: Initialize the PKI dir for a clean PKI
+  shell: easyrsa --vars=./vars --batch init-pki
+  args:
+    chdir: "{{ ca_dir }}"
+    executable: /bin/bash
+
+- name: Generate the Certificate Authority(CA)
+  shell: easyrsa --vars=./vars --batch build-ca nopass && cp {{ ca_dir }}/pki/ca.crt /etc/openvpn/server/
+  args:
+    chdir: "{{ ca_dir }}"
+    executable: /bin/bash
+
+- name: Generate Server certificate and Private key
+  shell: easyrsa --vars=./vars --batch build-server-full {{ server_name }} nopass && cp {{ ca_dir }}/pki/private/{{ server_name }}.key {{ ca_dir }}/pki/issued/{{ server_name }}.crt /etc/openvpn/server/
+  args:
+    chdir: "{{ ca_dir }}"
+    executable: /bin/bash
+
+- name: Generate Diffie-Hellman (DH) parameters file
+  command: openssl dhparam -out /etc/openvpn/server/dh.pem 2048
+
+- name: Generate Hash-based Message Authentication Code (HMAC) key
+  command: openvpn --genkey --secret /etc/openvpn/server/ta.key

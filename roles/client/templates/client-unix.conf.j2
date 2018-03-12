@@ -1,0 +1,24 @@
+client
+dev {{ dev }}
+proto {{ proto }}
+remote {{remote}} {{ server_port }}
+resolv-retry infinite
+nobind
+user nobody
+group nobody
+persist-key
+persist-tun
+ca   ca.crt
+cert client.crt
+key  client.key
+remote-cert-tls server
+
+tls-auth ta.key 1
+
+cipher AES-256-CBC
+auth SHA512
+tls-version-min 1.2
+tls-cipher TLS-DHE-RSA-WITH-AES-256-GCM-SHA384:TLS-DHE-RSA-WITH-AES-128-GCM-SHA256:TLS-DHE-RSA-WITH-AES-256-CBC-SHA:TLS-DHE-RSA-WITH-CAMELLIA-256-CBC-SHA:TLS-DHE-RSA-WITH-AES-128-CBC-SHA:TLS-DHE-RSA-WITH-CAMELLIA-128-CBC-SHA
+comp-lzo
+verb 3
+;mute 20

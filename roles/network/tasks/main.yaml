@@ -1,0 +1,8 @@
+- name: Enable NAT forwarding
+  iptables:
+    chain: POSTROUTING
+    table: nat
+    source: 10.8.0.0/24
+    jump: MASQUERADE
+    out_interface: eth0
+  notify: Start OpenVPN Network

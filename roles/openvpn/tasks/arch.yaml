@@ -1,0 +1,12 @@
+- name: Install openvpn
+  pacman:
+    name: openvpn
+    state: present
+    update_cache: true
+
+- name: Add openvpn server Config
+  template:
+    src: server.conf.j2
+    dest: /etc/openvpn/server/server.conf
+    owner: root
+    group: root

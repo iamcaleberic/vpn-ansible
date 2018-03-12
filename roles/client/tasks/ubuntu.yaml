@@ -1,0 +1,5 @@
+- name: Build Client Certicate Key and Private key
+  shell: ./easyrsa --vars=./vars  --batch build-client-full {{ client_name }} nopass 
+  args:
+    chdir: "{{ ca_dir }}"
+    executable: /bin/bash

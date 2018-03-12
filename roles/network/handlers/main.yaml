@@ -1,0 +1,5 @@
+- name: Start OpenVPN Network
+  systemd:
+    name: openvpn
+    state: started
+    enabled: True

@@ -14,9 +14,9 @@ Ansible Playbook for deploying Open VPN on Ubuntu and Arch Host
   - Hash-based Message Authentication Code (HMAC) key
 - network
   - Enables NAT forwarding
-  - Starts OpenVPN network/client
+  - Starts OpenVPN network/service
 - client  
-  - Generates intial client cert and key
+  - Generates client cert and key
 
 ### Execution
 - Update your global variables at `group_vars/all` with your *server*, *client*, *certs* information
@@ -30,7 +30,7 @@ Ansible Playbook for deploying Open VPN on Ubuntu and Arch Host
 
   - `{client_name}.key` - {certpath}/pki/private/{client_name.key}
 
-- Fill in `template.ovpn` with info or use ovpn generators to generate `ovpn` profiles.
+- Fill in `template.ovpn` with info or use ovpn generators to generate `.ovpn` profiles.
 
 ###### Notes
 - Currently works on remote hosts running os-families:

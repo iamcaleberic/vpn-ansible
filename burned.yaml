@@ -1,0 +1,9 @@
+---
+- name: Ansible Playbook for Clearing Setup incase of breach
+  hosts: vpn
+  # remote_user: vpn_user
+  become: true
+  become_method: sudo
+  become_user: root
+  roles:
+    - burn

@@ -1,0 +1,55 @@
+- name: Install wget
+  apt:
+    name: wget
+    state: present
+    update_cache: true
+
+
+- name: Intialize CA directory
+  file:
+    path: "{{ ca_dir }}"
+    state: directory
+
+- name: Install EasyRSA binary
+  shell: wget https://github.com/OpenVPN/easy-rsa/releases/download/v3.0.4/EasyRSA-3.0.4.tgz && tar -xvf EasyRSA-3.0.4.tgz && mv EasyRSA-3.0.4/easyrsa EasyRSA-3.0.4/openssl-easyrsa.cnf && cp -r EasyRSA-3.0.4/x509-types .  && rm -rf EasyRSA-3.0.4*
+  args:
+    executable: /bin/bash
+    chdir: "{{ ca_dir }}"
+
+
+- name: Add Certicate Variables
+  template:
+    src: vars-ubuntu.j2
+    dest: "{{ ca_dir }}/vars"
+    owner: root
+    group: root
+
+- name: Intialize PKI directory
+  shell: ./easyrsa --vars=./vars --batch init-pki
+  args:
+    executable: /bin/bash
+    chdir: "{{ ca_dir }}"
+
+- name: Generate the Certificate Authority(CA)
+  shell: ./easyrsa --vars=./vars  --batch build-ca nopass && cp {{ ca_dir }}/pki/ca.crt /etc/openvpn/
+  args:
+    executable: /bin/bash
+    chdir: "{{ ca_dir }}"
+
+- name: Build Server Certicate Key and Private key
+  shell: ./easyrsa --vars=./vars  --batch build-server-full {{ server_name }} nopass  && cp {{ ca_dir }}/pki/private/{{ server_name }}.key {{ ca_dir }}/pki/issued/{{ server_name }}.crt  /etc/openvpn
+  args:
+    chdir: "{{ ca_dir }}"
+    executable: /bin/bash
+
+- name: Generate Diffie-Hellman (DH) parameters file
+  shell:  openssl dhparam -out /etc/openvpn/dh.pem 2048
+  args:
+    chdir: "{{ ca_dir }}"
+    executable: /bin/bash
+
+- name: Generate Hash-based Message Authentication Code (HMAC) key
+  shell:  openvpn --genkey --secret /etc/openvpn/ta.key
+  args:
+    chdir: "{{ ca_dir }}"
+    executable: /bin/bash

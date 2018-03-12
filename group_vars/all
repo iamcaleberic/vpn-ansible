@@ -1,0 +1,29 @@
+---
+# server Info
+domain: caleb.me
+server_name: server_name
+remote: server_ip
+proto: tcp # udp / tcp
+server_port: 8081  # 443/ 80 / 1194 etc.
+dev:  tun  # tun, tap
+# Cert Info
+key_country: United Kingdom
+key_province: London
+key_city: London
+key_org: Hive Eleven
+key_email: iamcaleberic@tuta.io
+key_cn:  HE Networks # common name
+key_altnames: Hive Network
+key_name: Hive
+key_ou: Hive Eleven Engineering
+key_size: 2048 # 2048 / 4096
+cert_expire: 360 # expire certs in?
+ca_expire: 360 # expire root CA ?
+algorithim: rsa # ec / rsa
+# Client
+client_name: vpn
+# DNS
+dns_one: 8.8.8.8
+dns_two: 8.8.4.4
+# certs directory
+ca_dir: "/etc/easy_rsa"
